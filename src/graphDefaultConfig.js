@@ -40,7 +40,10 @@ const config = {
   boxSelectionEnableType: ['node', 'curveEdge', 'straightEdge'],
 
   enableSingleSelection: true,
-  singleSelectionEnableType: ['node', 'curveEdge', 'straightEdge']
+  singleSelectionEnableType: ['node', 'curveEdge', 'straightEdge'],
+
+  enableContextMenu: true,
+  contextMenuEnableType: ['node', 'curveEdge', 'straightEdge']
 }
 
 export default config

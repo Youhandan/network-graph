@@ -5,6 +5,7 @@ import { BoxSelection } from './modules/BoxSelection'
 import { NodesHandler } from './modules/NodesHandler'
 import { EdgesHandler } from './modules/EdgesHandler'
 import { SingleSelection } from './modules/SingleSelection'
+import { ContextMenuTrigger } from './modules/ContextMenuTrigger'
 import { Renderer } from './modules/Renderer'
 import defaultConfig from './graphDefaultConfig'
 
@@ -18,6 +19,7 @@ class NetworkGraph extends EventDispatcher {
   #edgesHandler = null
   #boxSelectionControls = null
   #singleSelectionControls = null
+  #contextMenuTrigger = null
 
   #container = null
   #config = null
@@ -58,6 +60,9 @@ class NetworkGraph extends EventDispatcher {
     if (this.#config.enableSingleSelection) {
       this.#singleSelectionControls = new SingleSelection(this.#scene, this.#camera, this.#renderer.canvas, this.#config.singleSelectionEnableType)
     }
+    if (this.#config.enableContextMenu) {
+      this.#contextMenuTrigger = new ContextMenuTrigger(this.#scene, this.#camera, this.#renderer.canvas, this.#config.contextMenuEnableType)
+    }
   }
   #initViewPort() {
     const { targetPosition, enableRotate } = this.#config.viewPort
@@ -72,6 +77,9 @@ class NetworkGraph extends EventDispatcher {
     }
     if (this.#config.enableSingleSelection) {
       this.#singleSelectionControls.addEventListener('select', this.handleSelectByObjects)
+    }
+    if (this.#config.enableContextMenu) {
+      this.#contextMenuTrigger.addEventListener('contextMenu', this.handleTriggerContextMenu)
     }
     this.#dragControls.addEventListener('dragstart', this.handleDragstart)
     this.#dragControls.addEventListener('dragend', this.handleDragend)
@@ -103,6 +111,11 @@ class NetworkGraph extends EventDispatcher {
     if (!(originSelectedEdgesIds.length === 0 && currentSelectedEdgesIds.length === 0)) {
       this.dispatchEvent({type: 'selectEdgesChange', param: this.#edgesHandler.selectedEdgesIds})
     }
+  }
+  handleTriggerContextMenu = ({param}) => {
+    const { object, event } = param
+    const target = object ? {type: object.name, id: object.userId} : object
+    this.dispatchEvent({type: 'contextMenuTriggered', param: {target, event}})
   }
   enableBoxSelect = () => {
     this.#boxSelectionControls.enable()
