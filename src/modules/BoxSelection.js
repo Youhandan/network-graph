@@ -12,7 +12,7 @@ class BoxSelection extends EventDispatcher {
     super()
     if (!(scene && camera && canvasDom && enableObjectsNames && selectionBoxStyles)) throw new Error('Lost required constructor param')
     this.#selectionBox = new SelectionBox(camera, scene)
-    this.#selectionBoxHelper = new SelectionHelper(this.#selectionBox, canvasDom, selectionBoxStyles)
+    this.#selectionBoxHelper = new SelectionHelper(canvasDom, selectionBoxStyles)
     this.#canvas = canvasDom
     this.#enableObjectsNames = enableObjectsNames
     this.#bindEvents()

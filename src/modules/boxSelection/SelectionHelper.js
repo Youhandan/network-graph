@@ -5,7 +5,7 @@ import { Vector2 } from 'three/build/three.module'
 
 var SelectionHelper = ( function () {
 
-	function SelectionHelper( selectionBox, canvasDom, boxStyles ) {
+	function SelectionHelper( canvasDom, boxStyles ) {
 
 		this.element = document.createElement( 'div' );
 		this.element.style.position = 'fixed';
