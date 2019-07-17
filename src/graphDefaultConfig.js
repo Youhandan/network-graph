@@ -37,13 +37,13 @@ const config = {
     border: '1px solid #55aaff',
     backgroundColor: 'rgba(75, 160, 255, 0.3)'
   },
-  boxSelectionEnableType: ['node', 'curveEdge', 'straightEdge'],
+  boxSelectionEnableType: ['node', 'edge'],
 
   enableSingleSelection: true,
-  singleSelectionEnableType: ['node', 'curveEdge', 'straightEdge'],
+  singleSelectionEnableType: ['node', 'edge'],
 
   enableContextMenu: true,
-  contextMenuEnableType: ['node', 'curveEdge', 'straightEdge']
+  contextMenuEnableType: ['node', 'edge']
 }
 
 export default config

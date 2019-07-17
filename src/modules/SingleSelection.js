@@ -39,7 +39,7 @@ class SingleSelection extends EventDispatcher {
     rayCaster.setFromCamera(mouse, this.#camera)
     const intersects = rayCaster.intersectObjects(this.#scene.children, true)
     let selectedObjects = []
-    if (intersects.length > 0 && this.#enableObjectsNames.includes(intersects[0].object.parent.name)) selectedObjects.push(intersects[0].object.parent)
+    if (intersects.length > 0 && this.#enableObjectsNames.includes(intersects[0].object.parent.objectType)) selectedObjects.push(intersects[0].object.parent)
 
     this.dispatchEvent({type: 'select', objects: selectedObjects})
   }

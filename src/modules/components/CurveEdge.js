@@ -21,7 +21,8 @@ class CurveEdge extends Object3D {
     this.sourcePos = new Vector3(sourcePos.x, sourcePos.y, sourcePos.z)
     this.targetPos = new Vector3(targetPos.x, targetPos.y, targetPos.z)
     this.userData = userData
-    this.name = 'curveEdge'
+    this.objectType = 'edge'
+    this.name = 'curve'
     this.curve = null
     this.arrow = null
 

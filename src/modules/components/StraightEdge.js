@@ -23,7 +23,8 @@ class StraightEdge extends Object3D {
     this.sourcePos = new Vector3(sourcePos.x, sourcePos.y, sourcePos.z)
     this.targetPos = new Vector3(targetPos.x, targetPos.y, targetPos.z)
     this.userData = userData
-    this.name = 'straightEdge'
+    this.objectType = 'edge'
+    this.name = 'straight'
     this.arrow = null
     this.line = null
 

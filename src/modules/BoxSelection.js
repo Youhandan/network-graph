@@ -53,7 +53,7 @@ class BoxSelection extends EventDispatcher {
       const intersectsObjects = this.#selectionBox.select()
       let selectedObjects = {}
       intersectsObjects.forEach((objectChild) => {
-        if (this.#enableObjectsNames.includes(objectChild.parent.name) && objectChild.parent.visible) {
+        if (this.#enableObjectsNames.includes(objectChild.parent.objectType) && objectChild.parent.visible) {
           selectedObjects[objectChild.parent.userId] = objectChild.parent
         }
       })

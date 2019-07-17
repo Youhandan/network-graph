@@ -97,8 +97,8 @@ class NetworkGraph extends EventDispatcher {
     const originSelectedNodesIds = this.#nodesHandler.selectedNodesIds
     const originSelectedEdgesIds = this.#edgesHandler.selectedEdgesIds
     objects.forEach((object) => {
-      if (object.name === 'curveEdge' || object.name === 'straightEdge') edgeIds.push(object.userId)
-      if (object.name === 'node') nodeIds.push(object.userId)
+      if (object.objectType === 'edge') edgeIds.push(object.userId)
+      if (object.objectType === 'node') nodeIds.push(object.userId)
     })
     this.#nodesHandler.selectNodes(nodeIds)
     this.#edgesHandler.selectEdges(edgeIds)
@@ -114,8 +114,11 @@ class NetworkGraph extends EventDispatcher {
   }
   handleTriggerContextMenu = ({param}) => {
     const { object, event } = param
-    const target = object ? {type: object.name, id: object.userId} : object
-    this.dispatchEvent({type: 'contextMenuTriggered', param: {target, event}})
+    if (!object) return this.dispatchEvent({type: 'rightClickStage', param: {event}})
+
+    const target = object.userData
+    if (object.objectType === 'edge') return this.dispatchEvent({type: 'rightClickEdge', param: {target, event}})
+    if (object.objectType === 'node') return this.dispatchEvent({type: 'rightClickNode', param: {target, event}})
   }
   enableBoxSelect = () => {
     this.#boxSelectionControls.enable()

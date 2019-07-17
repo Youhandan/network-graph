@@ -19,7 +19,8 @@ class Node extends Object3D {
     this.userId = data.id
     this.circlePaneMesh = null
     this.selectedBoxMesh = null
-    this.name = 'node'
+    this.name = 'circle'
+    this.objectType = 'node'
 
     this.color = config.nodeColor
     this.size = config.nodeSize

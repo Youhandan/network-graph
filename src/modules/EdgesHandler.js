@@ -36,10 +36,10 @@ class EdgesHandler {
       const edgeInst = this.edgeIdMap[edge.id]
       const sourcePos = this.nodesHandler.nodeIdMap[edgeInst.userData.source].position
       const targetPos = this.nodesHandler.nodeIdMap[edgeInst.userData.target].position
-      if (edgeInst.name === 'straightEdge') {
+      if (edgeInst.name === 'straight') {
         edgeInst.updatePosition(sourcePos, targetPos)
       }
-      if (edgeInst.name === 'curveEdge') {
+      if (edgeInst.name === 'curve') {
         edgeInst.updatePosition(sourcePos, targetPos, edge.controlPointCenterOffset)
       }
     })
