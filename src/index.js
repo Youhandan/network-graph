@@ -5,7 +5,7 @@ import { BoxSelection } from './modules/BoxSelection'
 import { NodesHandler } from './modules/NodesHandler'
 import { EdgesHandler } from './modules/EdgesHandler'
 import { SingleSelection } from './modules/SingleSelection'
-import { ContextMenuTrigger } from './modules/ContextMenuTrigger'
+import { RightClick } from './modules/RightClick'
 import { Renderer } from './modules/Renderer'
 import defaultConfig from './graphDefaultConfig'
 
@@ -19,7 +19,7 @@ class NetworkGraph extends EventDispatcher {
   #edgesHandler = null
   #boxSelectionControls = null
   #singleSelectionControls = null
-  #contextMenuTrigger = null
+  #rightClickControl = null
 
   #container = null
   #config = null
@@ -61,7 +61,7 @@ class NetworkGraph extends EventDispatcher {
       this.#singleSelectionControls = new SingleSelection(this.#scene, this.#camera, this.#renderer.canvas, this.#config.singleSelectionEnableType)
     }
     if (this.#config.enableContextMenu) {
-      this.#contextMenuTrigger = new ContextMenuTrigger(this.#scene, this.#camera, this.#renderer.canvas, this.#config.contextMenuEnableType)
+      this.#rightClickControl = new RightClick(this.#scene, this.#camera, this.#renderer.canvas, this.#config.contextMenuEnableType)
     }
   }
   #initViewPort() {
@@ -79,7 +79,7 @@ class NetworkGraph extends EventDispatcher {
       this.#singleSelectionControls.addEventListener('select', this.handleSelectByObjects)
     }
     if (this.#config.enableContextMenu) {
-      this.#contextMenuTrigger.addEventListener('contextMenu', this.handleTriggerContextMenu)
+      this.#rightClickControl.addEventListener('contextMenu', this.handleTriggerContextMenu)
     }
     this.#dragControls.addEventListener('dragstart', this.handleDragstart)
     this.#dragControls.addEventListener('dragend', this.handleDragend)

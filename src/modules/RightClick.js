@@ -1,6 +1,6 @@
 import { Raycaster, Vector2, EventDispatcher } from 'three/build/three.module'
 
-class ContextMenuTrigger extends EventDispatcher {
+class RightClick extends EventDispatcher {
   enabled = true
   #canvas = null
   #camera = null
@@ -45,4 +45,4 @@ class ContextMenuTrigger extends EventDispatcher {
   }
 }
 
-export { ContextMenuTrigger }
+export { RightClick }
