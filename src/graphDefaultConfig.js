@@ -32,18 +32,12 @@ const config = {
   straightEdgeArrowLength: 2,
   straightEdgeArrowWidth: 1,
 
-  enableBoxSelection: true,
+  boxSelect: true,
   selectionBoxStyles: {
     border: '1px solid #55aaff',
     backgroundColor: 'rgba(75, 160, 255, 0.3)'
   },
-  boxSelectionEnableType: ['node', 'edge'],
-
-  enableSingleSelection: true,
-  singleSelectionEnableType: ['node', 'edge'],
-
-  enableContextMenu: true,
-  contextMenuEnableType: ['node', 'edge']
+  boxSelectEnableType: ['node', 'edge']
 }
 
 export default config

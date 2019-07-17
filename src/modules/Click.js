@@ -1,12 +1,12 @@
 import { Raycaster, Vector2, EventDispatcher } from 'three/build/three.module'
 
-class SingleSelection extends EventDispatcher {
+class Click extends EventDispatcher {
   enabled = true
   #canvas = null
   #camera = null
   #scene = null
   #enableObjectsNames
-  constructor(scene, camera, canvasDom, enableObjectsNames) {
+  constructor(scene, camera, canvasDom, enableObjectsNames = ['node', 'edge']) {
     super()
     if (!(scene && camera && canvasDom && enableObjectsNames)) throw new Error('Lost required constructor param')
 
@@ -41,8 +41,8 @@ class SingleSelection extends EventDispatcher {
     let selectedObjects = []
     if (intersects.length > 0 && this.#enableObjectsNames.includes(intersects[0].object.parent.objectType)) selectedObjects.push(intersects[0].object.parent)
 
-    this.dispatchEvent({type: 'select', objects: selectedObjects})
+    this.dispatchEvent({type: 'click', param: {object: selectedObjects[0], event}})
   }
 }
 
-export { SingleSelection }
+export { Click }

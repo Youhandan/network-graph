@@ -2,7 +2,7 @@ import { EventDispatcher } from 'three'
 import { SelectionBox } from './boxSelection/SelectionBox'
 import { SelectionHelper } from './boxSelection/SelectionHelper'
 
-class BoxSelection extends EventDispatcher {
+class BoxSelect extends EventDispatcher {
   enabled = false
   #selectionBox = null
   #selectionBoxHelper = null
@@ -15,6 +15,7 @@ class BoxSelection extends EventDispatcher {
     this.#selectionBoxHelper = new SelectionHelper(canvasDom, selectionBoxStyles)
     this.#canvas = canvasDom
     this.#enableObjectsNames = enableObjectsNames
+    this.selectedObjects = {}
     this.#bindEvents()
   }
   enable () {
@@ -24,6 +25,7 @@ class BoxSelection extends EventDispatcher {
   disable () {
     this.enabled = false
     this.#selectionBoxHelper.disableBoxSelect()
+    this.selectedObjects = {}
   }
   #bindEvents () {
     this.#canvas.addEventListener('mousedown', this.#handleMousedown)
@@ -51,14 +53,11 @@ class BoxSelection extends EventDispatcher {
         0.5)
 
       const intersectsObjects = this.#selectionBox.select()
-      let selectedObjects = {}
       intersectsObjects.forEach((objectChild) => {
         if (this.#enableObjectsNames.includes(objectChild.parent.objectType) && objectChild.parent.visible) {
-          selectedObjects[objectChild.parent.userId] = objectChild.parent
+          this.selectedObjects[objectChild.parent.userId] = objectChild.parent
         }
       })
-
-      this.dispatchEvent({type: 'boxSelect', objects: Object.values(selectedObjects)})
     }
   }
   #handleMouseup = (event) => {
@@ -67,8 +66,8 @@ class BoxSelection extends EventDispatcher {
       (event.clientX / window.innerWidth) * 2 - 1,
       -(event.clientY / window.innerHeight) * 2 + 1,
       0.5);
-    setTimeout(() => this.dispatchEvent({type: 'boxSelectEnd'}), 0) //exec after click event
+    setTimeout(() => this.dispatchEvent({type: 'boxSelectEnd', param: Object.values(this.selectedObjects)}), ) //exec after click event
   }
 }
 
-export { BoxSelection }
+export { BoxSelect }

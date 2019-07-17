@@ -6,7 +6,7 @@ class RightClick extends EventDispatcher {
   #camera = null
   #scene = null
   #enableObjectsNames
-  constructor(scene, camera, canvasDom, enableObjectsNames) {
+  constructor(scene, camera, canvasDom, enableObjectsNames = ['node', 'edge']) {
     super()
     if (!(scene && camera && canvasDom && enableObjectsNames)) throw new Error('Lost required constructor param')
 
