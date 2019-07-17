@@ -79,7 +79,7 @@ class NetworkGraph extends EventDispatcher {
       this.#singleSelectionControls.addEventListener('select', this.handleSelectByObjects)
     }
     if (this.#config.enableContextMenu) {
-      this.#rightClickControl.addEventListener('contextMenu', this.handleTriggerContextMenu)
+      this.#rightClickControl.addEventListener('rightClick', this.handleRightClick)
     }
     this.#dragControls.addEventListener('dragstart', this.handleDragstart)
     this.#dragControls.addEventListener('dragend', this.handleDragend)
@@ -112,7 +112,7 @@ class NetworkGraph extends EventDispatcher {
       this.dispatchEvent({type: 'selectEdgesChange', param: this.#edgesHandler.selectedEdgesIds})
     }
   }
-  handleTriggerContextMenu = ({param}) => {
+  handleRightClick = ({param}) => {
     const { object, event } = param
     if (!object) return this.dispatchEvent({type: 'rightClickStage', param: {event}})
 

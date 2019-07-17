@@ -41,7 +41,7 @@ class RightClick extends EventDispatcher {
     let selectedObjects = []
     if (intersects.length > 0 && this.#enableObjectsNames.includes(intersects[0].object.parent.objectType)) selectedObjects.push(intersects[0].object.parent)
 
-    this.dispatchEvent({type: 'contextMenu', param: {object: selectedObjects[0], event}})
+    this.dispatchEvent({type: 'rightClick', param: {object: selectedObjects[0], event}})
   }
 }
 
