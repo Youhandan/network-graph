@@ -6,6 +6,7 @@ import { NodesHandler } from './modules/NodesHandler'
 import { EdgesHandler } from './modules/EdgesHandler'
 import { Click } from './modules/Click'
 import { RightClick } from './modules/RightClick'
+import { DoubleClick } from './modules/DoubleClick'
 import { Renderer } from './modules/Renderer'
 import defaultConfig from './graphDefaultConfig'
 
@@ -20,6 +21,7 @@ class NetworkGraph extends EventDispatcher {
   #boxSelectControl = null
   #clickControl = null
   #rightClickControl = null
+  #doubleClickControl = null
 
   #container = null
   #config = null
@@ -56,6 +58,7 @@ class NetworkGraph extends EventDispatcher {
     this.#dragControls = new DragControls(this.#nodesHandler, this.#camera, this.#renderer.canvas)
     this.#clickControl = new Click(this.#scene, this.#camera, this.#renderer.canvas)
     this.#rightClickControl = new RightClick(this.#scene, this.#camera, this.#renderer.canvas)
+    this.#doubleClickControl = new DoubleClick(this.#scene, this.#camera, this.#renderer.canvas)
 
     if (this.#config.boxSelect) {
       this.#boxSelectControl = new BoxSelect(this.#scene, this.#camera, this.#renderer.canvas, this.#config.boxSelectEnableType, this.#config.selectionBoxStyles)
@@ -73,6 +76,7 @@ class NetworkGraph extends EventDispatcher {
     }
     this.#clickControl.addEventListener('click', this.handleClick)
     this.#rightClickControl.addEventListener('rightClick', this.handleRightClick)
+    this.#doubleClickControl.addEventListener('dblclick', this.handleDoubleClick)
     this.#dragControls.addEventListener('dragstart', this.handleDragstart)
     this.#dragControls.addEventListener('dragend', this.handleDragend)
     this.#dragControls.addEventListener('drag', this.handleDragmove)
@@ -98,6 +102,14 @@ class NetworkGraph extends EventDispatcher {
     const target = object.userData
     if (object.objectType === 'edge') return this.dispatchEvent({type: 'rightClickEdge', param: {target, event}})
     if (object.objectType === 'node') return this.dispatchEvent({type: 'rightClickNode', param: {target, event}})
+  }
+  handleDoubleClick = ({param}) => {
+    const { object, event } = param
+    if (!object) return this.dispatchEvent({type: 'dblclickStage', param: {event}})
+
+    const target = object.userData
+    if (object.objectType === 'edge') return this.dispatchEvent({type: 'dblclickEdge', param: {target, event}})
+    if (object.objectType === 'node') return this.dispatchEvent({type: 'dblclickNode', param: {target, event}})
   }
   enableBoxSelect = () => {
     this.#boxSelectControl.enable()
