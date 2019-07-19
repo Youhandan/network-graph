@@ -117,12 +117,14 @@ class NetworkGraph extends EventDispatcher {
     if (object.objectType === 'node') return this.dispatchEvent({type: 'dblclickNode', param: {target, event}})
   }
   handleHoverOn = ({param}) => {
+    console.log('hoveron',param)
     const { object, event } = param
     const target = object.userData
 
     this.dispatchEvent({type: 'hoveron', param: {target, event}})
   }
   handleHoverOff = ({param}) => {
+    console.log('hoveroff',param)
     const { object, event } = param
     const target = object.userData
 
@@ -145,6 +147,7 @@ class NetworkGraph extends EventDispatcher {
   }
   handleDragstart = () => {
     this.#viewPort.enabled = false
+    this.#hoverControl.disable()
   }
   handleDragmove = ({node}) => {
     const edges = this.#nodesHandler.nodeRelatedEdgesMap[node.userId]
@@ -152,6 +155,7 @@ class NetworkGraph extends EventDispatcher {
   }
   handleDragend = () => {
     this.#viewPort.enabled = true
+    this.#hoverControl.enable()
   }
 
   addNodes (originalNodes) {
