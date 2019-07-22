@@ -59,6 +59,7 @@ class NetworkGraph extends EventDispatcher {
     const { targetPosition, enableRotate } = this.#config.viewPort
     this.#viewPort.target.set(targetPosition[0], targetPosition[1], targetPosition[2])
     this.#viewPort.enableRotate = enableRotate
+    this.#viewPort.enableKeys = false
     this.#viewPort.update()
   }
   #bindEvent() {
