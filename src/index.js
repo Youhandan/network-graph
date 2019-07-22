@@ -1,14 +1,10 @@
 import { Scene, PerspectiveCamera, EventDispatcher } from 'three/build/three.module'
-import { DragControls } from './modules/DragControls'
 import { OrbitControls } from './modules/OrbitControls'
 import { BoxSelect } from './modules/BoxSelect'
 import { NodesHandler } from './modules/NodesHandler'
 import { EdgesHandler } from './modules/EdgesHandler'
-import { Click } from './modules/Click'
-import { RightClick } from './modules/RightClick'
-import { DoubleClick } from './modules/DoubleClick'
-import { Hover } from './modules/Hover'
 import { Renderer } from './modules/Renderer'
+import Events from './modules/Events'
 import defaultConfig from './graphDefaultConfig'
 
 class NetworkGraph extends EventDispatcher {
@@ -16,14 +12,10 @@ class NetworkGraph extends EventDispatcher {
   #camera = null
   #renderer = null
   #viewPort = null
-  #dragControls = null
   #nodesHandler = null
   #edgesHandler = null
   #boxSelectControl = null
-  #clickControl = null
-  #rightClickControl = null
-  #doubleClickControl = null
-  #hoverControl = null
+  #eventsControl
 
   #container = null
   #config = null
@@ -57,11 +49,7 @@ class NetworkGraph extends EventDispatcher {
     this.#viewPort = new OrbitControls(this.#camera, this.#renderer.canvas)
     this.#nodesHandler = new NodesHandler(this.#scene, this.#config)
     this.#edgesHandler = new EdgesHandler(this.#scene, this.#nodesHandler, this.#config)
-    this.#dragControls = new DragControls(this.#nodesHandler, this.#camera, this.#renderer.canvas)
-    this.#clickControl = new Click(this.#scene, this.#camera, this.#renderer.canvas)
-    this.#rightClickControl = new RightClick(this.#scene, this.#camera, this.#renderer.canvas)
-    this.#doubleClickControl = new DoubleClick(this.#scene, this.#camera, this.#renderer.canvas)
-    this.#hoverControl = new Hover(this.#scene, this.#camera, this.#renderer.canvas)
+    this.#eventsControl = new Events(this.#scene, this.#camera, this.#renderer.canvas)
 
     if (this.#config.boxSelect) {
       this.#boxSelectControl = new BoxSelect(this.#scene, this.#camera, this.#renderer.canvas, this.#config.boxSelectEnableType, this.#config.selectionBoxStyles)
@@ -77,18 +65,18 @@ class NetworkGraph extends EventDispatcher {
     if (this.#config.boxSelect) {
       this.#boxSelectControl.addEventListener('boxSelectEnd', this.handleBoxSelectEnd)
     }
-    this.#clickControl.addEventListener('click', this.handleClick)
-    this.#rightClickControl.addEventListener('rightClick', this.handleRightClick)
-    this.#doubleClickControl.addEventListener('dblclick', this.handleDoubleClick)
-    this.#hoverControl.addEventListener('hoveron', this.handleHoverOn)
-    this.#hoverControl.addEventListener('hoveroff', this.handleHoverOff)
-    this.#dragControls.addEventListener('dragstart', this.handleDragstart)
-    this.#dragControls.addEventListener('dragend', this.handleDragend)
-    this.#dragControls.addEventListener('drag', this.handleDragmove)
+    this.#eventsControl.addEventListener('click', this.handleClick)
+    this.#eventsControl.addEventListener('rightClick', this.handleRightClick)
+    this.#eventsControl.addEventListener('dblclick', this.handleDoubleClick)
+    this.#eventsControl.addEventListener('hoveron', this.handleHoverOn)
+    this.#eventsControl.addEventListener('hoveroff', this.handleHoverOff)
+    this.#eventsControl.addEventListener('dragstart', this.handleDragstart)
+    this.#eventsControl.addEventListener('dragend', this.handleDragend)
+    this.#eventsControl.addEventListener('drag', this.handleDragmove)
   }
   #unBindEvent() {
     this.#config.boxSelect && this.#boxSelectControl.dispose()
-    this.#dragControls.dispose()
+    this.#eventsControl.deactivate()
     this.#renderer.dispose()
   }
 
@@ -117,14 +105,12 @@ class NetworkGraph extends EventDispatcher {
     if (object.objectType === 'node') return this.dispatchEvent({type: 'dblclickNode', param: {target, event}})
   }
   handleHoverOn = ({param}) => {
-    console.log('hoveron',param)
     const { object, event } = param
     const target = object.userData
 
     this.dispatchEvent({type: 'hoveron', param: {target, event}})
   }
   handleHoverOff = ({param}) => {
-    console.log('hoveroff',param)
     const { object, event } = param
     const target = object.userData
 
@@ -132,7 +118,7 @@ class NetworkGraph extends EventDispatcher {
   }
   enableBoxSelect = () => {
     this.#boxSelectControl.enable()
-    this.#clickControl.disable()
+    this.#eventsControl.disable()
   }
   handleBoxSelectEnd = ({param}) => {
     let edgeIds = [], nodeIds = []
@@ -143,19 +129,19 @@ class NetworkGraph extends EventDispatcher {
     this.dispatchEvent({type: 'boxSelect', param: {nodeIds, edgeIds}})
 
     this.#boxSelectControl.disable()
-    this.#clickControl.enable()
+    setTimeout(() => {
+      this.#eventsControl.enable()
+    }, 0)
   }
   handleDragstart = () => {
     this.#viewPort.enabled = false
-    this.#hoverControl.disable()
   }
-  handleDragmove = ({node}) => {
-    const edges = this.#nodesHandler.nodeRelatedEdgesMap[node.userId]
+  handleDragmove = ({param}) => {
+    const edges = this.#nodesHandler.nodeRelatedEdgesMap[param.object.userId]
     if (edges) this.updateEdgesPosition(edges)
   }
   handleDragend = () => {
     this.#viewPort.enabled = true
-    this.#hoverControl.enable()
   }
 
   addNodes (originalNodes) {
