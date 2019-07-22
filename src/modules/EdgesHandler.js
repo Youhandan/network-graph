@@ -18,13 +18,16 @@ class EdgesHandler {
   }
   addEdges = (edgesData, lineType = 'straight') => {
     edgesData.forEach((edgeData) => {
-      const sourcePos = this.nodesHandler.nodeIdMap[edgeData.source].position
-      const targetPos = this.nodesHandler.nodeIdMap[edgeData.target].position
-      const edge = {sourcePos,targetPos, ...edgeData}
+      const source = this.nodesHandler.nodeIdMap[edgeData.source]
+      const target = this.nodesHandler.nodeIdMap[edgeData.target]
+      if (!source || !target) throw new Error('related node is not exist!')
+
+      const edge = {sourcePos: source.position, targetPos: target.position, ...edgeData}
       const edgeInst = lineType === 'straight' ? new StraightEdge(edge, this.config) : new CurveEdge(edge, this.config)
       this.edgeIdMap[edgeInst.userId] = edgeInst
       this.scene.add(edgeInst)
     })
+    this.nodesHandler.addRelatedEdgesToNodes(edgesData)
   }
   selectEdges = (edgeIds) => {
     this.edges.forEach((edgeInst) => {

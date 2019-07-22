@@ -163,7 +163,6 @@ class NetworkGraph extends EventDispatcher {
   }
   addEdges (originalLines, lineType) {
     this.#edgesHandler.addEdges(originalLines, lineType)
-    this.#nodesHandler.addRelatedEdgesToNodes(originalLines)
   }
   updateEdgesVisibility (edgeIds, visible) {
     this.#edgesHandler.updateEdgesVisibility(edgeIds, visible)
