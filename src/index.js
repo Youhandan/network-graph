@@ -120,13 +120,15 @@ class NetworkGraph extends EventDispatcher {
     const { object, event } = param
     const target = object.userData
 
-    this.dispatchEvent({type: 'hoveron', param: {target, event}})
+    if (object.objectType === 'edge') return this.dispatchEvent({type: 'hoveronEdge', param: {target, event}})
+    if (object.objectType === 'node') return this.dispatchEvent({type: 'hoveronNode', param: {target, event}})
   }
   handleHoverOff = ({param}) => {
     const { object, event } = param
     const target = object.userData
 
-    this.dispatchEvent({type: 'hoveroff', param: {target, event}})
+    if (object.objectType === 'edge') return this.dispatchEvent({type: 'hoveroffEdge', param: {target, event}})
+    if (object.objectType === 'node') return this.dispatchEvent({type: 'hoveroffNode', param: {target, event}})
   }
   enableBoxSelect = () => {
     this.#boxSelectControl.enable()
