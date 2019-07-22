@@ -75,7 +75,19 @@ class NetworkGraph extends EventDispatcher {
     this.#eventsControl.addEventListener('drag', this.handleDragmove)
   }
   #unBindEvent() {
-    this.#config.boxSelect && this.#boxSelectControl.dispose()
+    if (this.#config.boxSelect) {
+      this.#boxSelectControl.removeEventListener('boxSelectEnd', this.handleBoxSelectEnd)
+      this.#boxSelectControl.dispose()
+    }
+    this.#eventsControl.removeEventListener('click', this.handleClick)
+    this.#eventsControl.removeEventListener('rightClick', this.handleRightClick)
+    this.#eventsControl.removeEventListener('dblclick', this.handleDoubleClick)
+    this.#eventsControl.removeEventListener('hoveron', this.handleHoverOn)
+    this.#eventsControl.removeEventListener('hoveroff', this.handleHoverOff)
+    this.#eventsControl.removeEventListener('dragstart', this.handleDragstart)
+    this.#eventsControl.removeEventListener('dragend', this.handleDragend)
+    this.#eventsControl.removeEventListener('drag', this.handleDragmove)
+
     this.#eventsControl.deactivate()
     this.#renderer.dispose()
   }
