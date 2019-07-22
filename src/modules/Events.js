@@ -123,6 +123,11 @@ class Events extends EventDispatcher {
       }
       this.#canvas.style.cursor = 'move'
       this.dispatchEvent( { type: 'dragstart', param: {object: this.#selected}} )
+
+      if (this.#hovered !== null) {
+        this.dispatchEvent({type: 'hoveroff', param: {object: this.#hovered, event}})
+        this.#hovered = null
+      }
     }
   }
   #onMouseCancel = (event) => {
