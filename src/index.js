@@ -39,13 +39,13 @@ class NetworkGraph extends EventDispatcher {
     }
   }
   #initScene() {
-    const { fov, aspect, near, far, position } = this.#config.camera
+    const { fov, near, far, position } = this.#config.camera
     this.#scene = new Scene()
-    this.#camera = new PerspectiveCamera( fov, aspect, near, far )
+    this.#camera = new PerspectiveCamera( fov, this.#container.clientWidth/this.#container.clientHeight, near, far )
     this.#camera.position.set(position[0], position[1], position[2])
   }
   #installModules() {
-    this.#renderer = new Renderer(this.#scene, this.#camera)
+    this.#renderer = new Renderer(this.#scene, this.#camera, this.#container.clientWidth, this.#container.clientHeight)
     this.#viewPort = new OrbitControls(this.#camera, this.#renderer.canvas)
     this.#nodesHandler = new NodesHandler(this.#scene, this.#config)
     this.#edgesHandler = new EdgesHandler(this.#scene, this.#nodesHandler, this.#config)

@@ -1,16 +1,12 @@
 import { WebGLRenderer } from 'three/build/three.module'
 
-const defaultConfig = {
-  width: window.innerWidth,
-  height: window.innerHeight
-}
 class Renderer {
   #renderer = null
   #camera = null
   #scene = null
-  constructor(scene, camera, config = {}) {
-    this.width = config.width || defaultConfig.width
-    this.height = config.height || defaultConfig.height
+  constructor(scene, camera, width, height) {
+    this.width = width
+    this.height = height
     this.#scene = scene
     this.#camera = camera
     this.#renderer = new WebGLRenderer({antialias: true, logarithmicDepthBuffer: true,  alpha: true})

@@ -39,17 +39,19 @@ class BoxSelect extends EventDispatcher {
   }
   #handleMousedown = (event) => {
     if (!this.enabled) return
+    const rect = this.#canvas.getBoundingClientRect()
     this.#selectionBox.startPoint.set(
-      (event.clientX / window.innerWidth) * 2 - 1,
-      -(event.clientY / window.innerHeight) * 2 + 1,
+      ((event.clientX - rect.left) / rect.width) * 2 - 1,
+      -((event.clientY - rect.top) / rect.height) * 2 + 1,
       0.5)
   }
   #handleMousemove = (event) => {
     if (!this.enabled) return
     if (this.#selectionBoxHelper.isDown) {
+      const rect = this.#canvas.getBoundingClientRect()
       this.#selectionBox.endPoint.set(
-        (event.clientX / window.innerWidth) * 2 - 1,
-        -(event.clientY / window.innerHeight) * 2 + 1,
+        ((event.clientX - rect.left) / rect.width) * 2 - 1,
+        -((event.clientY - rect.top) / rect.height) * 2 + 1,
         0.5)
 
       const intersectsObjects = this.#selectionBox.select()
@@ -62,10 +64,11 @@ class BoxSelect extends EventDispatcher {
   }
   #handleMouseup = (event) => {
     if (!this.enabled) return
+    const rect = this.#canvas.getBoundingClientRect()
     this.#selectionBox.endPoint.set(
-      (event.clientX / window.innerWidth) * 2 - 1,
-      -(event.clientY / window.innerHeight) * 2 + 1,
-      0.5);
+      ((event.clientX - rect.left) / rect.width) * 2 - 1,
+      -((event.clientY - rect.top) / rect.height) * 2 + 1,
+      0.5)
     setTimeout(() => this.dispatchEvent({type: 'boxSelectEnd', param: Object.values(this.selectedObjects)}), ) //exec after click event
   }
 }
