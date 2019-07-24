@@ -22,9 +22,11 @@ class Events extends EventDispatcher {
   #raycaster
   #mouse
   #enabled
+  #clickEnabled
   constructor(scene, camera, canvasDom) {
     super()
     this.#enabled = true
+    this.#clickEnabled = true
     this.#scene = scene
     this.#camera = camera
     this.#canvas = canvasDom
@@ -45,10 +47,10 @@ class Events extends EventDispatcher {
     this.#active()
   }
   enable() {
-    this.enabled = true
+    this.#enabled = true
   }
   disable() {
-    this.enabled = false
+    this.#enabled = false
   }
   #active () {
     this.#canvas.addEventListener( 'mousemove', this.#onMouseMove, false )
@@ -67,7 +69,7 @@ class Events extends EventDispatcher {
     this.#canvas.removeEventListener('contextmenu', this.#onRightClick)
   }
   #onMouseMove = (event) => {
-    if (!this.enabled) return
+    if (!this.#enabled) return
     event.preventDefault()
 
     const rect = this.#canvas.getBoundingClientRect()
@@ -78,12 +80,16 @@ class Events extends EventDispatcher {
     //drag logic
     this.#raycaster.setFromCamera(this.#mouse, this.#camera)
     if (this.#selected) {
-      let originPos, currentPos
+      if (this.#clickEnabled) this.#clickEnabled = false
+
+      let originPos = new Vector3(), currentPos = new Vector3()
+
       if (this.#raycaster.ray.intersectPlane(plane, intersection)) {
-        originPos = new Vector3().copy(this.#selected.position)
+        originPos.copy(this.#selected.position)
         this.#selected.position.copy(intersection.sub(offset).applyMatrix4(inverseMatrix))
-        currentPos = new Vector3().copy(this.#selected.position)
+        currentPos.copy(this.#selected.position)
       }
+
       this.dispatchEvent({type: 'drag', param: {object: this.#selected, offset: currentPos.sub(originPos)}})
       return
     }
@@ -110,7 +116,7 @@ class Events extends EventDispatcher {
     }
   }
   #onMouseDown = (event) => {
-    if (!this.enabled) return
+    if (!this.#enabled) return
     if (event.button !== MOUSE.LEFT) return
 
     event.preventDefault()
@@ -134,7 +140,7 @@ class Events extends EventDispatcher {
     }
   }
   #onMouseCancel = (event) => {
-    if (!this.enabled) return
+    if (!this.#enabled) return
 
     event.preventDefault()
     if ( this.#selected ) {
@@ -142,10 +148,13 @@ class Events extends EventDispatcher {
       this.#selected = null
     }
 
+    setTimeout(() => {
+      this.#clickEnabled = true
+    }, 0)
     this.#canvas.style.cursor = this.#hovered ? 'pointer' : 'auto'
   }
   #onDoubleClick = (event) => {
-    if (!this.enabled) return
+    if (!this.#enabled) return
 
     this.#raycaster.setFromCamera(this.#mouse, this.#camera)
     const intersects = this.#raycaster.intersectObjects(this.#scene.children, true)
@@ -155,7 +164,7 @@ class Events extends EventDispatcher {
     this.dispatchEvent({type: 'dblclick', param: {object: selectedObjects[0], event}})
   }
   #onClick = (event) => {
-    if (!this.enabled) return
+    if (!this.#enabled || !this.#clickEnabled) return
 
     this.#raycaster.setFromCamera(this.#mouse, this.#camera)
     const intersects = this.#raycaster.intersectObjects(this.#scene.children, true)
@@ -165,7 +174,7 @@ class Events extends EventDispatcher {
     this.dispatchEvent({type: 'click', param: {object: selectedObjects[0], event}})
   }
   #onRightClick = (event) => {
-    if (!this.enabled) return
+    if (!this.#enabled) return
 
     this.#raycaster.setFromCamera(this.#mouse, this.#camera)
     const intersects = this.#raycaster.intersectObjects(this.#scene.children, true)
