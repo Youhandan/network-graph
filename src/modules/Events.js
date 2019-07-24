@@ -78,10 +78,13 @@ class Events extends EventDispatcher {
     //drag logic
     this.#raycaster.setFromCamera(this.#mouse, this.#camera)
     if (this.#selected) {
+      let originPos, currentPos
       if (this.#raycaster.ray.intersectPlane(plane, intersection)) {
+        originPos = new Vector3().copy(this.#selected.position)
         this.#selected.position.copy(intersection.sub(offset).applyMatrix4(inverseMatrix))
+        currentPos = new Vector3().copy(this.#selected.position)
       }
-      this.dispatchEvent({type: 'drag', param: {object: this.#selected}})
+      this.dispatchEvent({type: 'drag', param: {object: this.#selected, offset: currentPos.sub(originPos)}})
       return
     }
 
