@@ -50,6 +50,12 @@ class NodesHandler {
       this.scene.add(nodeInst)
     })
   }
+  deleteNodes = (nodeIds) => {
+    nodeIds.forEach((nodeId) => {
+      this.scene.remove(this.nodeIdMap[nodeId])
+      delete this.nodeIdMap[nodeId]
+    })
+  }
   selectNodes = (nodeIds) => {
     this.nodes.forEach((nodeInst) => {
       nodeInst.selected = nodeIds.includes(nodeInst.userId)

@@ -173,6 +173,15 @@ class NetworkGraph extends EventDispatcher {
   addNodes (originalNodes) {
     this.#nodesHandler.addNodes(originalNodes)
   }
+  deleteNodes (nodeIds) {
+    let edgeIds = []
+    nodeIds.forEach((nodeId) => {
+      const edges = this.#nodesHandler.nodeRelatedEdgesMap[nodeId]
+      if (edges) edgeIds.push(...edges.map((edge) => edge.id))
+    })
+    this.deleteEdges(edgeIds)
+    this.#nodesHandler.deleteNodes(nodeIds)
+  }
   addEdges (originalLines, lineType) {
     this.#edgesHandler.addEdges(originalLines, lineType)
   }
