@@ -152,13 +152,19 @@ class NetworkGraph extends EventDispatcher {
     this.#viewPort.enabled = false
   }
   handleDragmove = ({param}) => {
-    this.#nodesHandler.selectedNodesIds.forEach((nodeId) => {
-      if (nodeId === param.object.userId) return
-      const node = this.#nodesHandler.nodeIdMap[nodeId]
-      node.position.add(param.offset)
-    })
     const edges = this.#nodesHandler.nodeRelatedEdgesMap[param.object.userId]
     if (edges) this.updateEdgesPosition(edges)
+
+    const selectedNodeIds = this.#nodesHandler.selectedNodesIds
+    if (selectedNodeIds.includes(param.object.userId)) {
+      const needToUpdatePositionNodeIds = selectedNodeIds.filter((nodeId) => nodeId !== param.object.userId)
+      this.#nodesHandler.updateNodesPositionByOffset(needToUpdatePositionNodeIds, param.offset)
+
+      needToUpdatePositionNodeIds.forEach((nodeId) => {
+        const edges = this.#nodesHandler.nodeRelatedEdgesMap[nodeId]
+        if (edges) this.updateEdgesPosition(edges)
+      })
+    }
   }
   handleDragend = () => {
     this.#viewPort.enabled = true

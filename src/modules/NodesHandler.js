@@ -44,6 +44,11 @@ class NodesHandler {
       nodeInst.selected = nodeIds.includes(nodeInst.userId)
     })
   }
+  updateNodesPositionByOffset = (nodeIds, offset) => {
+    nodeIds.forEach((nodeId)=> {
+      this.nodeIdMap[nodeId].position.add(offset)
+    })
+  }
 }
 
 export { NodesHandler }
