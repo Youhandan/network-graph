@@ -57,6 +57,14 @@ class EdgesHandler {
       this.edgeIdMap[edgeId].updateColor(color)
     })
   }
+  deleteEdges = (edgeIds) => {
+    const edgesData = edgeIds.map((edgeId) => this.edgeIdMap[edgeId].userData)
+    this.nodesHandler.deleteRelatedEdgesToNodes(edgesData)
+    edgeIds.forEach((edgeId) => {
+      this.scene.remove(this.edgeIdMap[edgeId])
+      delete this.edgeIdMap[edgeId]
+    })
+  }
 }
 
 export { EdgesHandler }

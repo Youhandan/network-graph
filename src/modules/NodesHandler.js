@@ -21,6 +21,12 @@ class NodesHandler {
       this.#addNodeRelatedEdge(newEdge.target, newEdge, 'to')
     })
   }
+  deleteRelatedEdgesToNodes = (edges) => {
+    edges.forEach((edge) => {
+      this.#deleteNodeRelatedEdge(edge.source, edge.id)
+      this.#deleteNodeRelatedEdge(edge.target, edge.id)
+    })
+  }
   #addNodeRelatedEdge (nodeId, newEdge, direction) {
     if (this.nodeRelatedEdgesMap[nodeId]) {
       const isEdgeExist = this.nodeRelatedEdgesMap[nodeId].findIndex((edge) => edge.id === newEdge.id) !== -1
@@ -30,6 +36,11 @@ class NodesHandler {
     } else {
       this.nodeRelatedEdgesMap[nodeId] = [{id: newEdge.id, direction}]
     }
+  }
+  #deleteNodeRelatedEdge (nodeId, edgeId) {
+    const nodeRelatedEdges = this.nodeRelatedEdgesMap[nodeId]
+    const edgeIndex = nodeRelatedEdges.findIndex((edge) => edge.id === edgeId)
+    nodeRelatedEdges.splice(edgeIndex, 1)
   }
 
   addNodes = (nodes) => {
