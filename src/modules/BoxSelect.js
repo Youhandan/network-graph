@@ -55,6 +55,7 @@ class BoxSelect extends EventDispatcher {
         0.5)
 
       const intersectsObjects = this.#selectionBox.select()
+      this.selectedObjects = {}
       intersectsObjects.forEach((objectChild) => {
         if (this.#enableObjectsNames.includes(objectChild.parent.objectType) && objectChild.parent.visible) {
           this.selectedObjects[objectChild.parent.userId] = objectChild.parent
@@ -69,7 +70,7 @@ class BoxSelect extends EventDispatcher {
       ((event.clientX - rect.left) / rect.width) * 2 - 1,
       -((event.clientY - rect.top) / rect.height) * 2 + 1,
       0.5)
-    setTimeout(() => this.dispatchEvent({type: 'boxSelectEnd', param: Object.values(this.selectedObjects)}), ) //exec after click event
+    this.dispatchEvent({type: 'boxSelectEnd', param: Object.values(this.selectedObjects)})
   }
 }
 
