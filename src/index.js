@@ -134,6 +134,7 @@ class NetworkGraph extends EventDispatcher {
   enableBoxSelect = () => {
     this.#boxSelectControl.enable()
     this.#eventsControl.disable()
+    this.#viewPort.enabled = false
   }
   handleBoxSelectEnd = ({param}) => {
     let edgeIds = [], nodeIds = []
@@ -146,6 +147,7 @@ class NetworkGraph extends EventDispatcher {
     this.#boxSelectControl.disable()
     setTimeout(() => {
       this.#eventsControl.enable()
+      this.#viewPort.enabled = true
     }, 0)
   }
   handleDragstart = () => {
