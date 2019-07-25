@@ -6,15 +6,23 @@ const config = {
     position: [0, 0, 100]
   },// Refer to threejs perspective camera [https://threejs.org/docs/#api/en/cameras/PerspectiveCamera]
   viewPort: {
-    targetPosition: [0, 2, 10],
+    targetPosition: [0, 0, 10],
     enableRotate: false
   },// Refer to threejs OrbitControls module [https://threejs.org/docs/#examples/en/controls/OrbitControls]
 
   nodeSize: 3,
-  nodeColor: '#0000ff',
-  nodeSelectedBorderColor: '#000000',
-  nodeLabelColor: '#000000',
-  nodeLabelFontSize: 100,
+  nodeColor: '#5CCEC2',
+  nodeActiveColor: '#FFFFFF',
+  nodeFillColor: '#161E28',
+  nodeFillActiveColor: '#5CCEC2',
+  nodeBorderSize: 2,
+  nodeBorderColor: '#5CCEC2',
+  nodeActiveBorderColor: '#FFFFFF',
+  nodeLabelColor: '#8196AC',
+  nodeLabelActiveColor: '#C6DEF0',
+  nodeLabelFontSize: 200,
+  nodeImgColor: '#5CCEC2',
+  nodeImgActiveColor: '#FFFFFF',
 
   curveEdgeColor: '#000000',
   curveEdgeSelectedColor: '#ff0000',

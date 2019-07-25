@@ -3,12 +3,16 @@ import {
   CircleBufferGeometry,
   TextureLoader,
   CanvasTexture,
-  BoxHelper,
   MeshBasicMaterial,
   Mesh,
   Object3D,
-  Vector3
+  EdgesGeometry,
+  Vector3,
+  Vector2
 } from 'three/build/three.module'
+import { LineSegmentsGeometry } from 'three/examples/jsm/lines/LineSegmentsGeometry.js'
+import { LineSegments2 } from 'three/examples/jsm/lines/LineSegments2.js'
+import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial.js'
 
 class Node extends Object3D {
   constructor(data, config) {
@@ -18,15 +22,25 @@ class Node extends Object3D {
     this.userData = userData
     this.userId = data.id
     this.circlePaneMesh = null
-    this.selectedBoxMesh = null
+    this.borderMesh = null
+    this.imgMesh = null
+    this.labelMesh = null
     this.name = 'circle'
     this.objectType = 'node'
 
     this.color = config.nodeColor
+    this.activeColor = config.nodeActiveColor
     this.size = config.nodeSize
-    this.selectedBorderColor = config.nodeSelectedBorderColor
+    this.borderSize = config.nodeBorderSize
+    this.borderColor = config.nodeBorderColor || this.color
+    this.activeBorderColor = config.nodeActiveBorderColor || this.activeColor
+    this.fillColor = config.nodeFillColor
+    this.fillActiveColor = config.nodeFillActiveColor || this.color
     this.labelColor = config.nodeLabelColor
+    this.labelActiveColor = config.nodeLabelActiveColor
     this.labelFontSize = config.nodeLabelFontSize
+    this.imgColor = config.nodeImgColor || this.color
+    this.imgActiveColor = config.nodeImgActiveColor || this.activeColor
 
     if (position) {
       this.position.copy(new Vector3(position.x, position.y, position.z))
@@ -39,31 +53,54 @@ class Node extends Object3D {
   set selected(val) {
     this.selectedStatus = val
     if (val) {
-      this.add(this.selectedBoxMesh)
+      this.borderMesh.material.color.set(this.activeBorderColor)
+      this.circlePaneMesh.material.color.set(this.fillActiveColor)
+      this.imgMesh && this.imgMesh.material.color.set(this.imgActiveColor)
+      this.labelMesh && this.labelMesh.material.color.set(this.labelActiveColor)
     } else {
-      this.remove(this.selectedBoxMesh)
+      this.borderMesh.material.color.set(this.borderColor)
+      this.circlePaneMesh.material.color.set(this.fillColor)
+      this.imgMesh && this.imgMesh.material.color.set(this.imgColor)
+      this.labelMesh && this.labelMesh.material.color.set(this.labelColor)
     }
   }
   init() {
     const { icon_url, label } = this.userData
     const bufferGeometry = new CircleBufferGeometry(this.size, 32)
-    const backgroundMaterial = new MeshBasicMaterial({ color: this.color })
+    const backgroundMaterial = new MeshBasicMaterial({ color: this.fillColor })
     this.circlePaneMesh = new Mesh(bufferGeometry, backgroundMaterial)
     this.add(this.circlePaneMesh)
-    this.selectedBoxMesh = new BoxHelper(this.circlePaneMesh, this.selectedBorderColor)
+    this.borderMesh = this.circleBorder(bufferGeometry)
+    this.add(this.borderMesh)
 
-    if (icon_url) this.add(this.imgMesh(bufferGeometry, icon_url))
-    if (label) this.add(this.labelMesh(label))
+    if (icon_url) {
+      this.imgMesh = this.img(bufferGeometry, icon_url)
+      this.add(this.imgMesh)
+    }
+    if (label) {
+      this.labelMesh = this.label(label)
+      this.add(this.labelMesh)
+    }
   }
-  imgMesh (geometry, img_url) {
-    const imgMaterial = new MeshBasicMaterial({map: new TextureLoader().load(img_url), transparent: true})
+  circleBorder(geometry) {
+    const borderGeo = new EdgesGeometry( geometry )
+    let fatBorderGeo = new LineSegmentsGeometry().setPositions(borderGeo.attributes.position.array)
+    const lineMaterial = new LineMaterial( {
+      color: this.borderColor,
+      linewidth: this.borderSize,
+      resolution: new Vector2(window.innerWidth, window.innerHeight)
+    } )
+    return new LineSegments2(fatBorderGeo, lineMaterial)
+  }
+  img (geometry, img_url) {
+    const imgMaterial = new MeshBasicMaterial({map: new TextureLoader().load(img_url), transparent: true, color: this.imgColor})
     return new Mesh(geometry, imgMaterial)
   }
-  labelMesh (labelText) {
+  label (labelText) {
     const labelCanvas = this.makeLabelCanvas(labelText)
     const labelGeometry = new PlaneBufferGeometry(1, 1)
     const texture = new CanvasTexture(labelCanvas)
-    const labelMaterial = new MeshBasicMaterial({map: texture, transparent: true})
+    const labelMaterial = new MeshBasicMaterial({map: texture, transparent: true, color: this.labelColor})
     const label = new Mesh(labelGeometry, labelMaterial)
     label.position.y = - this.size * 1.5 //relative position of parent
     // if units are meters then 0.01 here makes size of the label into centimeters.
@@ -88,7 +125,7 @@ class Node extends Object3D {
     ctx.font = font
     ctx.textBaseline = 'top'
 
-    ctx.fillStyle = this.labelColor
+    ctx.fillStyle = '#ffffff'
     ctx.fillText(labelText, borderSize, borderSize)
     return ctx.canvas
   }
