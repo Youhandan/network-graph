@@ -28,19 +28,19 @@ class Node extends Object3D {
     this.name = 'circle'
     this.objectType = 'node'
 
-    this.color = config.nodeColor
-    this.activeColor = config.nodeActiveColor
-    this.size = config.nodeSize
-    this.borderSize = config.nodeBorderSize
-    this.borderColor = config.nodeBorderColor || this.color
-    this.activeBorderColor = config.nodeActiveBorderColor || this.activeColor
-    this.fillColor = config.nodeFillColor
-    this.fillActiveColor = config.nodeFillActiveColor || this.color
-    this.labelColor = config.nodeLabelColor
-    this.labelActiveColor = config.nodeLabelActiveColor
-    this.labelFontSize = config.nodeLabelFontSize
-    this.imgColor = config.nodeImgColor || this.color
-    this.imgActiveColor = config.nodeImgActiveColor || this.activeColor
+    this.color = userData.style && userData.style.color || config.nodeColor
+    this.activeColor = userData.style && userData.style.activeColor || config.nodeActiveColor
+    this.size = userData.style && userData.style.size || config.nodeSize
+    this.borderSize = userData.style && userData.style.borderSize || config.nodeBorderSize
+    this.borderColor = userData.style && userData.style.borderColor || this.color || config.nodeBorderColor
+    this.activeBorderColor = userData.style && userData.style.activeBorderColor || this.activeColor || config.nodeActiveBorderColor
+    this.fillColor = userData.style && userData.style.fillColor || config.nodeFillColor
+    this.fillActiveColor = userData.style && userData.style.fillActiveColor || this.color || config.nodeFillActiveColor
+    this.labelColor = userData.style && userData.style.labelColor || config.nodeLabelColor
+    this.labelActiveColor = userData.style && userData.style.labelActiveColor || config.nodeLabelActiveColor
+    this.labelFontSize = userData.style && userData.style.labelFontSize || config.nodeLabelFontSize
+    this.imgColor = userData.style && userData.style.imgColor || this.color || config.nodeImgColor
+    this.imgActiveColor = userData.style && userData.style.imgActiveColor || this.activeColor || config.nodeImgActiveColor
 
     if (position) {
       this.position.copy(new Vector3(position.x, position.y, position.z))
