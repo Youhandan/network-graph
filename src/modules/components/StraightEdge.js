@@ -5,13 +5,15 @@ According to ArrowHelper class.
 import {
   BufferGeometry,
   Float32BufferAttribute,
-  LineSegments,
-  LineBasicMaterial,
   Vector3,
+  Vector2,
   MeshBasicMaterial,
   Mesh,
   Object3D
 } from 'three/build/three.module'
+import { LineSegmentsGeometry } from 'three/examples/jsm/lines/LineSegmentsGeometry.js'
+import { LineSegments2Enhence } from '../enhenceLib/LineSegments2-enhence'
+import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial.js'
 
 class StraightEdge extends Object3D {
   constructor(data, config) {
@@ -77,12 +79,13 @@ class StraightEdge extends Object3D {
     return new Vector3(x + startPoint.x, y + startPoint.y, z + startPoint.z)
   }
   lineMesh () {
-    const lineBufferGeometry = new BufferGeometry()
-    lineBufferGeometry.addAttribute( 'position', new Float32BufferAttribute( [ 0, 0, 0, 0, 1, 0 ], 3 ) )
-    const lineMaterial = new LineBasicMaterial( { color: this.color, linewidth: this.linewidth } )
-    let line = new LineSegments(lineBufferGeometry, lineMaterial)
-    line.matrixAutoUpdate = false
-    return line
+    const fatLineGeo = new LineSegmentsGeometry().setPositions( new Float32BufferAttribute( [ 0, 0, 0, 0, 1, 0 ], 3 ).array )
+    const lineMaterial = new LineMaterial( {
+      color: this.color,
+      linewidth: this.linewidth,
+      resolution: new Vector2(window.innerWidth, window.innerHeight)
+    } )
+    return new LineSegments2Enhence(fatLineGeo, lineMaterial)
   }
   arrowMesh () {
     const triangularGeometry = new BufferGeometry()
