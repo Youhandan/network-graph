@@ -43,7 +43,7 @@ class Node extends Object3D {
     this.imgColor = userData.style && userData.style.imgColor || this.color || config.nodeImgColor
     this.imgActiveColor = userData.style && userData.style.imgActiveColor || this.activeColor || config.nodeImgActiveColor
     this.iconColor = userData.style && userData.style.iconColor || this.color || config.nodeIconColor
-    this.iconAcitveColor = userData.style && userData.style.iconAcitveColor || this.activeColor || config.nodeIconAcitveColor
+    this.iconActiveColor = userData.style && userData.style.iconActiveColor || this.activeColor || config.nodeIconAcitveColor
 
     if (position) {
       this.position.copy(new Vector3(position.x, position.y, position.z))
@@ -58,7 +58,7 @@ class Node extends Object3D {
     if (val) {
       this.borderMesh.material.color.set(this.activeBorderColor)
       this.circlePaneMesh.material.color.set(this.fillActiveColor)
-      this.iconMesh && this.iconMesh.material.color.set(this.iconAcitveColor)
+      this.iconMesh && this.iconMesh.material.color.set(this.iconActiveColor)
       this.imgMesh && this.imgMesh.material.color.set(this.imgActiveColor)
       this.labelMesh && this.labelMesh.material.color.set(this.labelActiveColor)
     } else {

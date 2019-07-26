@@ -23,6 +23,8 @@ const config = {
   nodeLabelFontSize: 200,
   nodeImgColor: '#5CCEC2',
   nodeImgActiveColor: '#FFFFFF',
+  nodeIconColor: '#5CCEC2',
+  nodeIconActiveColor: '#FFFFFF',
 
   curveEdgeColor: '#000000',
   curveEdgeSelectedColor: '#ff0000',
