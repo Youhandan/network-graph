@@ -25,6 +25,7 @@ class Node extends Object3D {
     this.borderMesh = null
     this.imgMesh = null
     this.labelMesh = null
+    this.iconMesh = null
     this.name = 'circle'
     this.objectType = 'node'
 
@@ -41,6 +42,8 @@ class Node extends Object3D {
     this.labelFontSize = userData.style && userData.style.labelFontSize || config.nodeLabelFontSize
     this.imgColor = userData.style && userData.style.imgColor || this.color || config.nodeImgColor
     this.imgActiveColor = userData.style && userData.style.imgActiveColor || this.activeColor || config.nodeImgActiveColor
+    this.iconColor = userData.style && userData.style.iconColor || this.color || config.nodeIconColor
+    this.iconAcitveColor = userData.style && userData.style.iconAcitveColor || this.activeColor || config.nodeIconAcitveColor
 
     if (position) {
       this.position.copy(new Vector3(position.x, position.y, position.z))
@@ -55,17 +58,19 @@ class Node extends Object3D {
     if (val) {
       this.borderMesh.material.color.set(this.activeBorderColor)
       this.circlePaneMesh.material.color.set(this.fillActiveColor)
+      this.iconMesh && this.iconMesh.material.color.set(this.iconAcitveColor)
       this.imgMesh && this.imgMesh.material.color.set(this.imgActiveColor)
       this.labelMesh && this.labelMesh.material.color.set(this.labelActiveColor)
     } else {
       this.borderMesh.material.color.set(this.borderColor)
       this.circlePaneMesh.material.color.set(this.fillColor)
+      this.iconMesh && this.iconMesh.material.color.set(this.iconColor)
       this.imgMesh && this.imgMesh.material.color.set(this.imgColor)
       this.labelMesh && this.labelMesh.material.color.set(this.labelColor)
     }
   }
   init() {
-    const { icon_url, label } = this.userData
+    const { icon, label, imgUrl } = this.userData
     const bufferGeometry = new CircleBufferGeometry(this.size, 32)
     const backgroundMaterial = new MeshBasicMaterial({ color: this.fillColor })
     this.circlePaneMesh = new Mesh(bufferGeometry, backgroundMaterial)
@@ -73,8 +78,13 @@ class Node extends Object3D {
     this.borderMesh = this.circleBorder(bufferGeometry)
     this.add(this.borderMesh)
 
-    if (icon_url) {
-      this.imgMesh = this.img(bufferGeometry, icon_url)
+    if (icon) {
+      const { font, scale, content } = icon
+      this.iconMesh = this.icon(bufferGeometry, font, scale, content)
+      this.add(this.iconMesh)
+    }
+    if (imgUrl) {
+      this.imgMesh = this.img(bufferGeometry, imgUrl)
       this.add(this.imgMesh)
     }
     if (label) {
@@ -91,6 +101,14 @@ class Node extends Object3D {
       resolution: new Vector2(window.innerWidth, window.innerHeight)
     } )
     return new LineSegments2(fatBorderGeo, lineMaterial)
+  }
+  icon(bufferGeometry, font, scale = 1, content) {
+    const iconCanvas = this.makeIconCanvas(font, content)
+    const texture = new CanvasTexture(iconCanvas)
+    const iconMaterial = new MeshBasicMaterial({map: texture, transparent: true, color: this.iconColor})
+    const icon = new Mesh(bufferGeometry, iconMaterial)
+    icon.scale.multiplyScalar(scale)
+    return icon
   }
   img (geometry, img_url) {
     const imgMaterial = new MeshBasicMaterial({map: new TextureLoader().load(img_url), transparent: true, color: this.imgColor})
@@ -127,6 +145,25 @@ class Node extends Object3D {
 
     ctx.fillStyle = '#ffffff'
     ctx.fillText(labelText, borderSize, borderSize)
+    return ctx.canvas
+  }
+  makeIconCanvas(font, content) {
+    const ctx = document.createElement('canvas').getContext('2d')
+    // canvas height and width with icon size to decide the resolution of iconfont
+    // the larger canvas height, width, icon size, the higher resolution
+    const iconfont = `1000px ${font}`
+    ctx.font = iconfont
+    const width = 1000
+    const height = 1000
+    ctx.canvas.width = width
+    ctx.canvas.height = height
+
+    ctx.font = iconfont
+    ctx.textBaseline = 'middle'
+    ctx.textAlign = 'center'
+    ctx.fillStyle = '#ffffff'
+    ctx.fillText(content, 500, 500)
+
     return ctx.canvas
   }
 }
