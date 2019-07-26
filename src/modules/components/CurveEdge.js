@@ -1,8 +1,7 @@
 import {
   QuadraticBezierCurve3,
-  Line,
   Vector3,
-  LineBasicMaterial,
+  Vector2,
   BufferGeometry,
   Float32BufferAttribute,
   Mesh,
@@ -10,6 +9,9 @@ import {
   Object3D,
   Ray
 } from 'three/build/three.module'
+import { LineGeometry } from 'three/examples/jsm/lines/LineGeometry.js'
+import { Line2Enhence } from '../enhenceLib/Line2-enhence'
+import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial.js'
 
 class CurveEdge extends Object3D {
   constructor (data, config) {
@@ -73,9 +75,7 @@ class CurveEdge extends Object3D {
     const { startPoint, endPoint, controlPoint } = this
     const quadraticBezierCurve = new QuadraticBezierCurve3(startPoint, controlPoint, endPoint)
     const points = quadraticBezierCurve.getPoints(50)
-    const curveBufferGeometry = new BufferGeometry().setFromPoints(points)
-    const curveMaterial = new LineBasicMaterial( { color: this.color, linewidth: this.linewidth } )
-    this.curve = new Line(curveBufferGeometry, curveMaterial)
+    this.curve = this.curveMesh(points)
     this.add(this.curve)
 
     if (this.showArrow) {
@@ -85,6 +85,19 @@ class CurveEdge extends Object3D {
       this.setArrowLength(points[50], this.arrowLength, this.arrowWidth)
       this.add(this.arrow)
     }
+  }
+  curveMesh(points) {
+    let positions = []
+    points.forEach((point) => {
+      positions.push(point.x, point.y, point.z)
+    })
+    const curveFatGeometry = new LineGeometry().setPositions(positions)
+    const curveMaterial = new LineMaterial({
+      color: this.color,
+      linewidth: this.linewidth,
+      resolution: new Vector2(window.innerWidth, window.innerHeight)
+    })
+    return new Line2Enhence(curveFatGeometry, curveMaterial)
   }
   arrowMesh () {
     const triangularGeometry = new BufferGeometry()
@@ -126,7 +139,12 @@ class CurveEdge extends Object3D {
   updateGeometry () {
     const quadraticBezierCurve = new QuadraticBezierCurve3(this.startPoint, this.controlPoint, this.endPoint)
     const points = quadraticBezierCurve.getPoints( 50 )
-    this.curve.geometry.setFromPoints(points)
+    let positions = []
+    points.forEach((point) => {
+      positions.push(point.x, point.y, point.z)
+    })
+
+    this.curve.geometry.setPositions(positions)
     const dir = new Vector3().subVectors(points[50], points[49])
     this.setArrowDirection( dir.normalize())
     this.setArrowLength(points[50], this.arrowLength, this.arrowWidth)
