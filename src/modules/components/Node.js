@@ -77,6 +77,9 @@ class Node extends Object3D {
     this.add(this.circlePaneMesh)
     this.borderMesh = this.circleBorder(bufferGeometry)
     this.add(this.borderMesh)
+    this.children.forEach((mesh) => {
+      mesh.renderOrder = 999
+    }) // enable node to over edges
 
     if (icon) {
       const { font, scale, content } = icon
