@@ -167,6 +167,13 @@ class Node extends Object3D {
 
     return ctx.canvas
   }
+  updateColor = ({fillColor, borderColor, iconColor, imgColor, labelColor}) => {
+    this.circlePaneMesh.material.color.set(fillColor ? fillColor : this.selectedStatus ?  this.fillActiveColor : this.fillColor )
+    this.borderMesh.material.color.set(borderColor ? borderColor : this.selectedStatus ? this.activeBorderColor : this.borderColor)
+    this.iconMesh && this.iconMesh.material.color.set(iconColor ? iconColor : this.selectedStatus ? this.iconActiveColor : this.iconColor)
+    this.imgMesh && this.imgMesh.material.color.set(imgColor ? imgColor : this.selectedStatus ? this.imgActiveColor : this.imgColor)
+    this.labelMesh && this.labelMesh.material.color.set(labelColor ? labelColor : this.selectedStatus ? this.labelActiveColor : this.labelColor)
+  }
 }
 
 export { Node }

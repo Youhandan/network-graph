@@ -199,6 +199,9 @@ class NetworkGraph extends EventDispatcher {
   updateEdgesColor (edgeIds, color) {
     this.#edgesHandler.updateEdgesColor(edgeIds, color)
   }
+  updateNodesColor (nodeIds, colorData) {
+    this.#nodesHandler.updateNodesColor(nodeIds, colorData)
+  }
   selectNodesByIds (nodeIds) {
     this.#nodesHandler.selectNodes(nodeIds)
   }

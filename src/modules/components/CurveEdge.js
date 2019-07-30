@@ -159,8 +159,8 @@ class CurveEdge extends Object3D {
     this.visible = visible
   }
   updateColor = (color) => {
-    this.curve.material.color.set(color)
-    this.showArrow && this.arrow.material.color.set(color)
+    this.curve.material.color.set(color ? color : this.selectedStatus ? this.selectedColor : this.color)
+    this.showArrow && this.arrow.material.color.set(color ? color : this.selectedStatus ? this.selectedColor : this.color)
   }
 }
 

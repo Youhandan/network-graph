@@ -66,6 +66,11 @@ class NodesHandler {
       this.nodeIdMap[nodeId].position.add(offset)
     })
   }
+  updateNodesColor = (nodeIds, colorData) => {
+    nodeIds.forEach((nodeId) => {
+      this.nodeIdMap[nodeId].updateColor(colorData)
+    })
+  }
 }
 
 export { NodesHandler }
