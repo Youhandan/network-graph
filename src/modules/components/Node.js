@@ -72,14 +72,11 @@ class Node extends Object3D {
   init() {
     const { icon, label, imgUrl } = this.userData
     const bufferGeometry = new CircleBufferGeometry(this.size, 32)
-    const backgroundMaterial = new MeshBasicMaterial({ color: this.fillColor })
+    const backgroundMaterial = new MeshBasicMaterial({ color: this.fillColor, transparent: true })
     this.circlePaneMesh = new Mesh(bufferGeometry, backgroundMaterial)
     this.add(this.circlePaneMesh)
     this.borderMesh = this.circleBorder(bufferGeometry)
     this.add(this.borderMesh)
-    this.children.forEach((mesh) => {
-      mesh.renderOrder = 999
-    }) // enable node to over edges
 
     if (icon) {
       const { font, scale, content } = icon
@@ -101,6 +98,7 @@ class Node extends Object3D {
     const lineMaterial = new LineMaterial( {
       color: this.borderColor,
       linewidth: this.borderSize,
+      transparent: true,
       resolution: new Vector2(window.innerWidth, window.innerHeight)
     } )
     return new LineSegments2(fatBorderGeo, lineMaterial)
