@@ -56,11 +56,14 @@ class NetworkGraph extends EventDispatcher {
     }
   }
   #initViewPort() {
-    const { targetPosition, enableRotate } = this.#config.viewPort
+    const { targetPosition, enableRotate, zoomMinRatioOfCamera, zoomMaxRatioOfCamera } = this.#config.viewPort
+    const { near, far } = this.#config.camera
     this.#viewPort.target.set(targetPosition[0], targetPosition[1], targetPosition[2])
     this.#viewPort.enableRotate = enableRotate
     this.#viewPort.enableKeys = false
     this.#viewPort.screenSpacePanning = true
+    this.#viewPort.minDistance = near * zoomMaxRatioOfCamera
+    this.#viewPort.maxDistance = far * zoomMinRatioOfCamera
     this.#viewPort.update()
   }
   #bindEvent() {

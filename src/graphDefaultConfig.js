@@ -7,7 +7,9 @@ const config = {
   },// Refer to threejs perspective camera [https://threejs.org/docs/#api/en/cameras/PerspectiveCamera]
   viewPort: {
     targetPosition: [0, 0, 10],
-    enableRotate: false
+    enableRotate: false,
+    zoomMinRatioOfCamera: 0.8,
+    zoomMaxRatioOfCamera: 10
   },// Refer to threejs OrbitControls module [https://threejs.org/docs/#examples/en/controls/OrbitControls]
 
   nodeSize: 3,
