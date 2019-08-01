@@ -60,6 +60,7 @@ class NetworkGraph extends EventDispatcher {
     this.#viewPort.target.set(targetPosition[0], targetPosition[1], targetPosition[2])
     this.#viewPort.enableRotate = enableRotate
     this.#viewPort.enableKeys = false
+    this.#viewPort.screenSpacePanning = true
     this.#viewPort.update()
   }
   #bindEvent() {
