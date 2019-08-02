@@ -60,7 +60,7 @@ module.exports = {
     minimizer: [
       new ParallelUglifyPlugin({ // multi process compress
         cacheDir: '.cache/',
-        uglifyJS: {
+        uglifyES: {
           output: {
             comments: false,
             beautify: false
