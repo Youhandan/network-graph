@@ -1,4 +1,4 @@
-import { Scene, PerspectiveCamera, EventDispatcher } from 'three/build/three.module'
+import { Scene, PerspectiveCamera, EventDispatcher, Vector3 } from 'three/build/three.module'
 import { OrbitControls } from './modules/OrbitControls'
 import { BoxSelect } from './modules/BoxSelect'
 import { NodesHandler } from './modules/NodesHandler'
@@ -229,6 +229,21 @@ class NetworkGraph extends EventDispatcher {
   }
   selectEdgesByIds (edgeIds) {
     this.#edgesHandler.selectEdges(edgeIds)
+  }
+  transformToViewPosition (x, y) {
+    let vec = new Vector3()
+    let pos = new Vector3()
+    const rect = this.#renderer.canvas.getBoundingClientRect()
+    vec.set(
+      ((x - rect.left) / rect.width) * 2 - 1,
+      -((y - rect.top) / rect.height) * 2 + 1,
+      0.5 )
+
+    vec.unproject( this.#camera )
+    vec.sub( this.#camera.position ).normalize()
+    const distance = - this.#camera.position.z / vec.z
+    pos.copy( this.#camera.position ).add( vec.multiplyScalar( distance ) )
+    return pos
   }
 }
 
