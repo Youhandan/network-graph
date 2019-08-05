@@ -71,6 +71,11 @@ class NodesHandler {
       this.nodeIdMap[nodeId].updateColor(colorData)
     })
   }
+  updateNodesPosition = (nodes) => {
+    nodes.forEach((node) => {
+      this.nodeIdMap[node.id].updatePosition(node.position)
+    })
+  }
 }
 
 export { NodesHandler }

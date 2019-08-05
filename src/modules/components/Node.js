@@ -174,6 +174,9 @@ class Node extends Object3D {
     this.imgMesh && this.imgMesh.material.color.set(imgColor ? imgColor : this.selectedStatus ? this.imgActiveColor : this.imgColor)
     this.labelMesh && this.labelMesh.material.color.set(labelColor ? labelColor : this.selectedStatus ? this.labelActiveColor : this.labelColor)
   }
+  updatePosition = (position) => {
+    this.position.copy(new Vector3(position.x, position.y, position.z))
+  }
 }
 
 export { Node }

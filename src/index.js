@@ -206,6 +206,13 @@ class NetworkGraph extends EventDispatcher {
   updateNodesColor (nodeIds, colorData) {
     this.#nodesHandler.updateNodesColor(nodeIds, colorData)
   }
+  updateNodesPosition (nodes) {
+    this.#nodesHandler.updateNodesPosition(nodes)
+    nodes.forEach((node) => {
+      const edges = this.#nodesHandler.nodeRelatedEdgesMap[node.id]
+      if (edges) this.updateEdgesPosition(edges)
+    })
+  }
   selectNodesByIds (nodeIds) {
     this.#nodesHandler.selectNodes(nodeIds)
   }
