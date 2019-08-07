@@ -9,7 +9,7 @@ const config = {
     targetPosition: [0, 0, 10],
     enableRotate: false,
     zoomMinRatioOfCamera: 0.8,
-    zoomMaxRatioOfCamera: 10
+    zoomMaxRatioOfCamera: 50
   },// Refer to threejs OrbitControls module [https://threejs.org/docs/#examples/en/controls/OrbitControls]
 
   nodeSize: 3,
@@ -22,7 +22,9 @@ const config = {
   nodeActiveBorderColor: '#FFFFFF',
   nodeLabelColor: '#8196AC',
   nodeLabelActiveColor: '#C6DEF0',
-  nodeLabelFontSize: 200,
+  nodeLabelFontSize: 50,
+  nodeLabelScale: 0.05,
+  nodeLabelFontFamily: 'sans-serif',
   nodeImgColor: '#5CCEC2',
   nodeImgActiveColor: '#FFFFFF',
   nodeIconColor: '#5CCEC2',

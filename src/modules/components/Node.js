@@ -40,6 +40,8 @@ class Node extends Object3D {
     this.labelColor = userData.style && userData.style.labelColor || config.nodeLabelColor
     this.labelActiveColor = userData.style && userData.style.labelActiveColor || config.nodeLabelActiveColor
     this.labelFontSize = userData.style && userData.style.labelFontSize || config.nodeLabelFontSize
+    this.labelFontFamily = userData.style && userData.style.labelFontFamily || config.nodeLabelFontFamily
+    this.labelScale = userData.style && userData.style.labelScale || config.nodeLabelScale
     this.imgColor = userData.style && userData.style.imgColor || this.color || config.nodeImgColor
     this.imgActiveColor = userData.style && userData.style.imgActiveColor || this.activeColor || config.nodeImgActiveColor
     this.iconColor = userData.style && userData.style.iconColor || this.color || config.nodeIconColor
@@ -123,15 +125,14 @@ class Node extends Object3D {
     const label = new Mesh(labelGeometry, labelMaterial)
     label.position.y = - this.size * 1.5 //relative position of parent
     // if units are meters then 0.01 here makes size of the label into centimeters.
-    const labelBaseScale = 0.01
-    label.scale.x = labelCanvas.width  * labelBaseScale
-    label.scale.y = labelCanvas.height * labelBaseScale
+    label.scale.x = labelCanvas.width  * this.labelScale
+    label.scale.y = labelCanvas.height * this.labelScale
     return label
   }
   makeLabelCanvas(labelText) {
     const borderSize = 2
     const ctx = document.createElement('canvas').getContext('2d')
-    const font =  `${this.labelFontSize}px bold sans-serif`
+    const font =  `${this.labelFontSize}px ${this.labelFontFamily}`
     ctx.font = font
     // measure how long the name will be
     const doubleBorderSize = borderSize * 2
@@ -152,10 +153,10 @@ class Node extends Object3D {
     const ctx = document.createElement('canvas').getContext('2d')
     // canvas height and width with icon size to decide the resolution of iconfont
     // the larger canvas height, width, icon size, the higher resolution
-    const iconfont = `1000px ${font}`
+    const iconfont = `64px ${font}`
     ctx.font = iconfont
-    const width = 1000
-    const height = 1000
+    const width = 64
+    const height = 64
     ctx.canvas.width = width
     ctx.canvas.height = height
 
@@ -163,7 +164,7 @@ class Node extends Object3D {
     ctx.textBaseline = 'middle'
     ctx.textAlign = 'center'
     ctx.fillStyle = '#ffffff'
-    ctx.fillText(content, 500, 500)
+    ctx.fillText(content, 32, 32)
 
     return ctx.canvas
   }
