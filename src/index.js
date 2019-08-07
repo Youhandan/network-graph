@@ -245,6 +245,11 @@ class NetworkGraph extends EventDispatcher {
     pos.copy( this.#camera.position ).add( vec.multiplyScalar( distance ) )
     return pos
   }
+  snapshot({width, height, type}){
+    let image = new Image(width, height)
+    image.src = this.#renderer.canvas.toDataURL(type)
+    return image
+  }
 }
 
 export default NetworkGraph

@@ -9,7 +9,7 @@ class Renderer {
     this.height = height
     this.#scene = scene
     this.#camera = camera
-    this.#renderer = new WebGLRenderer({antialias: true, logarithmicDepthBuffer: true,  alpha: true})
+    this.#renderer = new WebGLRenderer({antialias: true, logarithmicDepthBuffer: true, preserveDrawingBuffer: true, alpha: true})
     this.#init()
   }
   get canvas () {
@@ -30,6 +30,8 @@ class Renderer {
   }
   #render = () => {
     requestAnimationFrame(this.#render)
+
+    this.#renderer.clear()
     this.#renderer.render(this.#scene, this.#camera)
   }
   #onWindowResize = () => {
