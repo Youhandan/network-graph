@@ -93,7 +93,7 @@ class NetworkGraph extends EventDispatcher {
     this.#eventsControl.removeEventListener('dragend', this.handleDragend)
     this.#eventsControl.removeEventListener('drag', this.handleDragmove)
 
-    this.#eventsControl.deactivate()
+    this.#eventsControl.dispose()
     this.#renderer.dispose()
   }
 
@@ -187,6 +187,19 @@ class NetworkGraph extends EventDispatcher {
     this.dispatchEvent({type: 'nodesPositionChanged', param: {nodesPosition: positionChangedNodes}})
   }
 
+  destroy () {
+    this.#unBindEvent()
+    this.#scene = null
+    this.#camera = null
+    this.#renderer = null
+    this.#viewPort = null
+    this.#nodesHandler = null
+    this.#edgesHandler = null
+    this.#boxSelectControl = null
+    this.#eventsControl = null
+    this.#container = null
+    this.#config = null
+  }
   addNodes (originalNodes) {
     this.#nodesHandler.addNodes(originalNodes)
   }

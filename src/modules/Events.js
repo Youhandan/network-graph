@@ -52,6 +52,9 @@ class Events extends EventDispatcher {
   disable() {
     this.#enabled = false
   }
+  dispose() {
+    this.#deactive()
+  }
   #active () {
     this.#canvas.addEventListener( 'mousemove', this.#onMouseMove, false )
     this.#canvas.addEventListener( 'mousedown', this.#onMouseDown, false )
