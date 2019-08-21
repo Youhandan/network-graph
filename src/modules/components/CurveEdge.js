@@ -56,7 +56,7 @@ class CurveEdge extends Object3D {
     const middlePoint = new Vector3((sourcePos.x + targetPos.x) / 2, (sourcePos.y + targetPos.y) / 2, (sourcePos.z + targetPos.z) / 2)
     controlPos.setLength(this.controlPointCenterOffset * sourcePos.distanceTo(targetPos) * 0.08)
     const axis = new Vector3().copy(targetPos).cross(sourcePos).normalize()
-    controlPos.applyAxisAngle(axis, axis.z > 0 ? Math.PI / 2 : 3 * Math.PI / 2)
+    controlPos.applyAxisAngle(axis, axis.z >= 0 ? Math.PI / 2 : 3 * Math.PI / 2)
     controlPos.add(middlePoint)
     return controlPos
   }
