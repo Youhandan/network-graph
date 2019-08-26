@@ -9,9 +9,10 @@ import {
   Object3D,
   Ray
 } from 'three/build/three.module'
+
+import Line2 from '../enhenceLib/Line2'
+import PerspectiveLineMaterial from '../enhenceLib/PerspectiveLineMaterial'
 import { LineGeometry } from 'three/examples/jsm/lines/LineGeometry.js'
-import { Line2Enhence } from '../enhenceLib/Line2-enhence'
-import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial.js'
 
 class CurveEdge extends Object3D {
   constructor (data, config) {
@@ -92,12 +93,13 @@ class CurveEdge extends Object3D {
       positions.push(point.x, point.y, point.z)
     })
     const curveFatGeometry = new LineGeometry().setPositions(positions)
-    const curveMaterial = new LineMaterial({
+
+    const perspectiveMatLine = new PerspectiveLineMaterial( {
       color: this.color,
-      linewidth: this.linewidth,
+      worldlinewidth: this.linewidth,
       resolution: new Vector2(window.innerWidth, window.innerHeight)
-    })
-    return new Line2Enhence(curveFatGeometry, curveMaterial)
+    } );
+    return new Line2(curveFatGeometry, perspectiveMatLine)
   }
   arrowMesh () {
     const triangularGeometry = new BufferGeometry()

@@ -17,7 +17,7 @@ const config = {
   nodeActiveColor: '#FFFFFF',
   nodeFillColor: '#161E28',
   nodeFillActiveColor: '#5CCEC2',
-  nodeBorderSize: 2,
+  nodeBorderSize: 0.2,
   nodeBorderColor: '#5CCEC2',
   nodeActiveBorderColor: '#FFFFFF',
   nodeLabelColor: '#8196AC',
@@ -32,7 +32,7 @@ const config = {
 
   curveEdgeColor: '#8196AC',
   curveEdgeSelectedColor: '#FFFFFF',
-  curveEdgeLineWidth: 2,
+  curveEdgeLineWidth: 0.1,
   curveEdgeControlPointCenterOffset: 5,
   curveEdgeArrow: true,
   curveEdgeArrowLength: 2,
@@ -40,7 +40,7 @@ const config = {
 
   straightEdgeColor: '#8196AC',
   straightEdgeSelectedColor: '#FFFFFF',
-  straightEdgeLineWidth: 3,
+  straightEdgeLineWidth: 0.2,
   straightEdgeArrow: false,
   straightEdgeArrowLength: 2,
   straightEdgeArrowWidth: 1,

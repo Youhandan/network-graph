@@ -1,7 +1,3 @@
-/*
-According to ArrowHelper class.
-* */
-
 import {
   BufferGeometry,
   Float32BufferAttribute,
@@ -11,9 +7,9 @@ import {
   Mesh,
   Object3D
 } from 'three/build/three.module'
+import LineSegments2 from '../enhenceLib/LineSegments2'
+import PerspectiveLineMaterial from '../enhenceLib/PerspectiveLineMaterial'
 import { LineSegmentsGeometry } from 'three/examples/jsm/lines/LineSegmentsGeometry.js'
-import { LineSegments2Enhence } from '../enhenceLib/LineSegments2-enhence'
-import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial.js'
 
 class StraightEdge extends Object3D {
   constructor(data, config) {
@@ -80,12 +76,12 @@ class StraightEdge extends Object3D {
   }
   lineMesh () {
     const fatLineGeo = new LineSegmentsGeometry().setPositions( new Float32BufferAttribute( [ 0, 0, 0, 0, 1, 0 ], 3 ).array )
-    const lineMaterial = new LineMaterial( {
+    const perspectiveMatLine = new PerspectiveLineMaterial( {
       color: this.color,
-      linewidth: this.linewidth,
+      worldlinewidth: this.linewidth,
       resolution: new Vector2(window.innerWidth, window.innerHeight)
-    } )
-    return new LineSegments2Enhence(fatLineGeo, lineMaterial)
+    } );
+    return new LineSegments2(fatLineGeo, perspectiveMatLine)
   }
   arrowMesh () {
     const triangularGeometry = new BufferGeometry()

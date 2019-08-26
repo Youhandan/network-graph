@@ -10,9 +10,9 @@ import {
   Vector3,
   Vector2
 } from 'three/build/three.module'
+import LineSegments2 from '../enhenceLib/LineSegments2'
+import PerspectiveLineMaterial from '../enhenceLib/PerspectiveLineMaterial'
 import { LineSegmentsGeometry } from 'three/examples/jsm/lines/LineSegmentsGeometry.js'
-import { LineSegments2 } from 'three/examples/jsm/lines/LineSegments2.js'
-import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial.js'
 
 class Node extends Object3D {
   constructor(data, config) {
@@ -97,13 +97,13 @@ class Node extends Object3D {
   circleBorder(geometry) {
     const borderGeo = new EdgesGeometry( geometry )
     let fatBorderGeo = new LineSegmentsGeometry().setPositions(borderGeo.attributes.position.array)
-    const lineMaterial = new LineMaterial( {
+    const perspectiveMatLine = new PerspectiveLineMaterial( {
       color: this.borderColor,
-      linewidth: this.borderSize,
+      worldlinewidth: this.borderSize,
       transparent: true,
       resolution: new Vector2(window.innerWidth, window.innerHeight)
-    } )
-    return new LineSegments2(fatBorderGeo, lineMaterial)
+    } );
+    return new LineSegments2(fatBorderGeo, perspectiveMatLine)
   }
   icon(bufferGeometry, font, scale = 1, content) {
     const iconCanvas = this.makeIconCanvas(font, content)
