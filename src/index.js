@@ -47,8 +47,8 @@ class NetworkGraph extends EventDispatcher {
   #installModules() {
     this.#renderer = new Renderer(this.#scene, this.#camera, this.#container.clientWidth, this.#container.clientHeight)
     this.#viewPort = new OrbitControls(this.#camera, this.#renderer.canvas)
-    this.#nodesHandler = new NodesHandler(this.#scene, this.#config)
-    this.#edgesHandler = new EdgesHandler(this.#scene, this.#nodesHandler, this.#config)
+    this.#nodesHandler = new NodesHandler(this.#scene, Object.assign(this.#config, {innerWidth: this.#container.clientWidth, innerHeight: this.#container.clientHeight}))
+    this.#edgesHandler = new EdgesHandler(this.#scene, this.#nodesHandler, Object.assign(this.#config, {innerWidth: this.#container.clientWidth, innerHeight: this.#container.clientHeight}))
     this.#eventsControl = new Events(this.#scene, this.#camera, this.#renderer.canvas)
 
     if (this.#config.boxSelect) {

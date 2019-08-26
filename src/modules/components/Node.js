@@ -28,6 +28,8 @@ class Node extends Object3D {
     this.iconMesh = null
     this.name = 'circle'
     this.objectType = 'node'
+    this.innerWidth = config.innerWidth
+    this.innerHeight = config.innerHeight
 
     this.color = userData.style && userData.style.color || config.nodeColor
     this.activeColor = userData.style && userData.style.activeColor || config.nodeActiveColor
@@ -71,6 +73,12 @@ class Node extends Object3D {
       this.labelMesh && this.labelMesh.material.color.set(this.labelColor)
     }
   }
+  set lineResolution({containerWidth, containerHeight}) {
+    this.innerWidth = containerWidth
+    this.innerHeight = containerHeight
+    this.borderMesh.material.resolution.set(containerWidth, containerHeight)
+  }
+
   init() {
     const { icon, label, imgUrl } = this.userData
     const bufferGeometry = new CircleBufferGeometry(this.size, 32)
@@ -101,7 +109,7 @@ class Node extends Object3D {
       color: this.borderColor,
       worldlinewidth: this.borderSize,
       transparent: true,
-      resolution: new Vector2(window.innerWidth, window.innerHeight)
+      resolution: new Vector2(this.innerWidth, this.innerHeight)
     } );
     return new LineSegments2(fatBorderGeo, perspectiveMatLine)
   }

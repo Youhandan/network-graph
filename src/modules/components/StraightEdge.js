@@ -25,6 +25,8 @@ class StraightEdge extends Object3D {
     this.name = 'straight'
     this.arrow = null
     this.line = null
+    this.innerWidth = config.innerWidth
+    this.innerHeight = config.innerHeight
 
     this.color = config.straightEdgeColor
     this.selectedColor = config.straightEdgeSelectedColor
@@ -74,12 +76,17 @@ class StraightEdge extends Object3D {
     const {x, y ,z} = this.direction.clone().setLength(distance - 3)
     return new Vector3(x + startPoint.x, y + startPoint.y, z + startPoint.z)
   }
+  set lineResolution({containerWidth, containerHeight}) {
+    this.innerWidth = containerWidth
+    this.innerHeight = containerHeight
+    this.line.material.resolution.set(containerWidth, containerHeight)
+  }
   lineMesh () {
     const fatLineGeo = new LineSegmentsGeometry().setPositions( new Float32BufferAttribute( [ 0, 0, 0, 0, 1, 0 ], 3 ).array )
     const perspectiveMatLine = new PerspectiveLineMaterial( {
       color: this.color,
       worldlinewidth: this.linewidth,
-      resolution: new Vector2(window.innerWidth, window.innerHeight)
+      resolution: new Vector2(this.innerWidth, this.innerHeight)
     } );
     return new LineSegments2(fatLineGeo, perspectiveMatLine)
   }

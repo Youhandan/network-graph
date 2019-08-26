@@ -28,6 +28,8 @@ class CurveEdge extends Object3D {
     this.name = 'curve'
     this.curve = null
     this.arrow = null
+    this.innerWidth = config.innerWidth
+    this.innerHeight = config.innerHeight
 
     this.color = config.curveEdgeColor
     this.selectedColor = config.curveEdgeSelectedColor
@@ -72,6 +74,12 @@ class CurveEdge extends Object3D {
     return new Ray(targetPos, dir).at(3, new Vector3())
   }
 
+  set lineResolution({containerWidth, containerHeight}) {
+    this.innerWidth = containerWidth
+    this.innerHeight = containerHeight
+    this.curve.material.resolution.set(containerWidth, containerHeight)
+  }
+
   init () {
     const { startPoint, endPoint, controlPoint } = this
     const quadraticBezierCurve = new QuadraticBezierCurve3(startPoint, controlPoint, endPoint)
@@ -97,7 +105,7 @@ class CurveEdge extends Object3D {
     const perspectiveMatLine = new PerspectiveLineMaterial( {
       color: this.color,
       worldlinewidth: this.linewidth,
-      resolution: new Vector2(window.innerWidth, window.innerHeight)
+      resolution: new Vector2(this.innerWidth, this.innerHeight)
     } );
     return new Line2(curveFatGeometry, perspectiveMatLine)
   }

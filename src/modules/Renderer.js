@@ -44,6 +44,9 @@ class Renderer {
     this.#camera.aspect = width / height
     this.#camera.updateProjectionMatrix()
     this.#renderer.setSize(width, height)
+    const objects = this.#scene.children
+    for(var object of objects)
+      object.lineResolution = {containerWidth: width, containerHeight: height}
   }
 }
 
