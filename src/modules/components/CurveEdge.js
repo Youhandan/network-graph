@@ -145,9 +145,11 @@ class CurveEdge extends Object3D {
     })
 
     this.curve.geometry.setPositions(positions)
-    const dir = new Vector3().subVectors(points[50], points[49])
-    this.setArrowDirection( dir.normalize())
-    this.setArrowLength(points[50], this.arrowLength, this.arrowWidth)
+    if (this.showArrow) {
+      const dir = new Vector3().subVectors(points[50], points[49])
+      this.setArrowDirection( dir.normalize())
+      this.setArrowLength(points[50], this.arrowLength, this.arrowWidth)
+    }
   }
   updatePosition = (sourcePos, targetPos, controlPointCenterOffset) => {
     this.sourcePos.copy(sourcePos)
