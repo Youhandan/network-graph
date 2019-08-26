@@ -268,6 +268,9 @@ class NetworkGraph extends EventDispatcher {
     image.src = this.#renderer.canvas.toDataURL(type)
     return image
   }
+  updateRendererSize(width, height) {
+    this.#renderer.updateRendererSize(width, height)
+  }
 }
 
 export default NetworkGraph

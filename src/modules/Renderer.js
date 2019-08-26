@@ -18,18 +18,10 @@ class Renderer {
     return this.#renderer.domElement
   }
   dispose () {
-    this.#unBindEvent()
     this.#stop()
-  }
-  #bindEvent () {
-    window.addEventListener('resize', this.#onWindowResize)
-  }
-  #unBindEvent () {
-    window.removeEventListener('resize', this.#onWindowResize)
   }
   #init() {
     this.#renderer.setSize( this.width, this.height )
-    this.#bindEvent()
     this.#start()
   }
   #start = () => {
@@ -48,10 +40,10 @@ class Renderer {
     this.#renderer.render(this.#scene, this.#camera)
     this.#renderHandlerId = requestAnimationFrame(this.#render)
   }
-  #onWindowResize = () => {
-    this.#camera.aspect = this.width / this.height
+  updateRendererSize(width, height) {
+    this.#camera.aspect = width / height
     this.#camera.updateProjectionMatrix()
-    this.#renderer.setSize(this.width, this.height)
+    this.#renderer.setSize(width, height)
   }
 }
 
