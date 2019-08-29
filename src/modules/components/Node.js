@@ -31,6 +31,10 @@ class Node extends Object3D {
     this.innerWidth = config.innerWidth
     this.innerHeight = config.innerHeight
 
+    this.showIcon = config.showIcon
+    this.showImg = config.showImg
+    this.showLabel = config.showLabel
+
     this.color = userData.style && userData.style.color || config.nodeColor
     this.activeColor = userData.style && userData.style.activeColor || config.nodeActiveColor
     this.size = userData.style && userData.style.size || config.nodeSize
@@ -88,16 +92,16 @@ class Node extends Object3D {
     this.borderMesh = this.circleBorder(bufferGeometry)
     this.add(this.borderMesh)
 
-    if (icon) {
+    if (icon && this.showIcon) {
       const { font, scale, content } = icon
       this.iconMesh = this.icon(bufferGeometry, font, scale, content)
       this.add(this.iconMesh)
     }
-    if (imgUrl) {
+    if (imgUrl && this.showImg) {
       this.imgMesh = this.img(bufferGeometry, imgUrl)
       this.add(this.imgMesh)
     }
-    if (label) {
+    if (label && this.showLabel) {
       this.labelMesh = this.label(label)
       this.add(this.labelMesh)
     }

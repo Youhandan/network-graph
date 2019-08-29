@@ -29,6 +29,9 @@ const config = {
   nodeImgActiveColor: '#FFFFFF',
   nodeIconColor: '#5CCEC2',
   nodeIconActiveColor: '#FFFFFF',
+  showImg: true,
+  showLabel: true,
+  showIcon: true,
 
   curveEdgeColor: '#8196AC',
   curveEdgeSelectedColor: '#FFFFFF',

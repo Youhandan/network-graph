@@ -23,7 +23,7 @@ class NetworkGraph extends EventDispatcher {
   constructor(dom, customConfig = {}) {
     super()
     this.#container = dom
-    this.#config = Object.assign(defaultConfig, customConfig)
+    this.#config = Object.assign({}, defaultConfig, customConfig)
     this.#init()
   }
   #init() {
@@ -263,8 +263,8 @@ class NetworkGraph extends EventDispatcher {
     pos.copy( this.#camera.position ).add( vec.multiplyScalar( distance ) )
     return pos
   }
-  snapshot({width, height, type}){
-    let image = new Image(width, height)
+  snapshot(type){
+    let image = new Image()
     image.src = this.#renderer.canvas.toDataURL(type)
     return image
   }
