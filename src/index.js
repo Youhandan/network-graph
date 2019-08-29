@@ -40,6 +40,8 @@ class NetworkGraph extends EventDispatcher {
   }
   #initScene() {
     const { fov, near, far, position } = this.#config.camera
+    if (!(fov && near && far && position)) throw new Error('camera config not complete!')
+
     this.#scene = new Scene()
     this.#camera = new PerspectiveCamera( fov, this.#container.clientWidth/this.#container.clientHeight, near, far )
     this.#camera.position.set(position[0], position[1], position[2])
@@ -58,6 +60,9 @@ class NetworkGraph extends EventDispatcher {
   #initViewPort() {
     const { targetPosition, enableRotate, zoomMinRatioOfCamera, zoomMaxRatioOfCamera } = this.#config.viewPort
     const { near, far } = this.#config.camera
+    if (!(near && far)) throw new Error('camera config not complete!')
+    if (!(targetPosition && enableRotate && zoomMinRatioOfCamera && zoomMaxRatioOfCamera)) throw new Error('view port config not complete!')
+
     this.#viewPort.target.set(targetPosition[0], targetPosition[1], targetPosition[2])
     this.#viewPort.enableRotate = enableRotate
     this.#viewPort.enableKeys = false

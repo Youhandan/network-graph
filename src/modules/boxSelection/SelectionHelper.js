@@ -10,8 +10,8 @@ var SelectionHelper = ( function () {
 		this.element = document.createElement( 'div' );
 		this.element.style.position = 'fixed';
     this.element.style.pointerEvents = 'none';
-    this.element.style.border = boxStyles.border
-		this.element.style.backgroundColor = boxStyles.backgroundColor
+    this.element.style.border = boxStyles.border || '1px solid #55aaff'
+		this.element.style.backgroundColor = boxStyles.backgroundColor || 'rgba(75, 160, 255, 0.3)'
 
 		this.canvas = canvasDom;
 
