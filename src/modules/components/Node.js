@@ -149,7 +149,7 @@ class Node extends Object3D {
     // measure how long the name will be
     const doubleBorderSize = borderSize * 2
     const width = ctx.measureText(labelText).width + doubleBorderSize
-    const height = this.labelFontSize + doubleBorderSize
+    const height = this.labelFontSize + doubleBorderSize * 2
     ctx.canvas.width = width
     ctx.canvas.height = height
 

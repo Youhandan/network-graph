@@ -61,7 +61,7 @@ class NetworkGraph extends EventDispatcher {
     const { targetPosition, enableRotate, zoomMinRatioOfCamera, zoomMaxRatioOfCamera } = this.#config.viewPort
     const { near, far } = this.#config.camera
     if (!(near && far)) throw new Error('camera config not complete!')
-    if (!(targetPosition && enableRotate && zoomMinRatioOfCamera && zoomMaxRatioOfCamera)) throw new Error('view port config not complete!')
+    if (!(targetPosition && enableRotate !== undefined && zoomMinRatioOfCamera && zoomMaxRatioOfCamera)) throw new Error('view port config not complete!')
 
     this.#viewPort.target.set(targetPosition[0], targetPosition[1], targetPosition[2])
     this.#viewPort.enableRotate = enableRotate
