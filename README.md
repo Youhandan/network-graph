@@ -1,6 +1,10 @@
 # network-graph
 This is a network graph lib based on Threejs, in order to optimize rendering over thousands of nodes in webgl mode.
 
+# Demo base on lib
+
+![image](https://github.com/Youhandan/network-graph/blob/master/static/demo.gif)
+
 # How to use
 ```
 <!DOCTYPE html>
